@@ -90,7 +90,6 @@ struct NewVersionView: View {
 							Text("Download")
 						}
 					}
-					
 				}
 			}
 		}

@@ -14,35 +14,35 @@ public class UpdateNotification {
 		updateFeed.load()
 		
 		guard let feed = updateFeed.feed else {
-			print("Feed unavailable.")
+			print("UpdateNotification: Feed unavailable.")
 			return false
 		}
 		
 		guard let lastItem = feed.items.last else {
-			print("No items in feed.")
+			print("UpdateNotification: No items in feed.")
 			return false
 		}
 		
 		if lastItem.version > currentVersion {
-			print("New version available.")
+			print("UpdateNotification: New version available.")
 			return true
 		}
 		
 		if let itemBuild = lastItem.build {
 			if lastItem.version == currentVersion &&
 				itemBuild > currentBuild {
-				print("New version available.")
+				print("UpdateNotification: New version available.")
 				return true
 			}
 		}
 		
-		print("No newer version available.")
+		print("UpdateNotification: No newer version available.")
 		return false
 	}
 	
 	public func showNewVersionView() {
 		guard let lastItem = updateFeed.feed?.items.last else {
-			print("Feed unavailable")
+			print("UpdateNotification: Feed unavailable")
 			return
 		}
 		
@@ -60,7 +60,7 @@ public class UpdateNotification {
 		updateFeed.load()
 		
 		guard let items = updateFeed.feed?.items else {
-			print("Feed unavailable")
+			print("UpdateNotification: Feed unavailable")
 			return
 		}
 		

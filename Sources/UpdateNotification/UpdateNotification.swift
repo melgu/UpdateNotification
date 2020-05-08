@@ -7,7 +7,10 @@ public class UpdateNotification {
 		self.updateFeed = UpdateFeedManager(feedUrl: feedUrl)
 	}
 	
-	public func checkForUpdates(currentVersion: String, currentBuild: String) -> Bool {
+	public func checkForUpdates() -> Bool {
+		var currentVersion, currentBuild: String
+		(currentVersion, currentBuild) = getVersionInfo()
+		
 		updateFeed.load()
 		
 		guard let feed = updateFeed.feed else {
@@ -43,12 +46,8 @@ public class UpdateNotification {
 			return
 		}
 		
-		var currentVersion = "Unknown"
-		var currentBuild = "Unknown"
-		if let infoDict = Bundle.main.infoDictionary {
-			currentVersion = infoDict["CFBundleShortVersionString"] as? String ?? "Unknown"
-			currentBuild = infoDict["CFBundleVersion"] as? String ?? "Unknown"
-		}
+		var currentVersion, currentBuild: String
+		(currentVersion, currentBuild) = getVersionInfo()
 		
 		let controller = ResizableWindowController(rootView:
 			NewVersionView(item: lastItem, currentVersion: currentVersion, currentBuild: currentBuild)
@@ -70,5 +69,15 @@ public class UpdateNotification {
 		)
 		controller.window?.title = "Changelog"
 		controller.showWindow(nil)
+	}
+	
+	private func getVersionInfo() -> (String, String) {
+		var currentVersion = "Unknown"
+		var currentBuild = "Unknown"
+		if let infoDict = Bundle.main.infoDictionary {
+			currentVersion = infoDict["CFBundleShortVersionString"] as? String ?? "Unknown"
+			currentBuild = infoDict["CFBundleVersion"] as? String ?? "Unknown"
+		}
+		return (currentVersion, currentBuild)
 	}
 }

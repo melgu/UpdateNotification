@@ -1,13 +1,13 @@
 import Foundation
 
-class UpdateNotification {
+public class UpdateNotification {
 	let updateFeed: UpdateFeedManager
 	
-	init(feedUrl: URL) {
+	public init(feedUrl: URL) {
 		self.updateFeed = UpdateFeedManager(feedUrl: feedUrl)
 	}
 	
-	func checkForUpdates(currentVersion: String, currentBuild: String) -> Bool {
+	public func checkForUpdates(currentVersion: String, currentBuild: String) -> Bool {
 		updateFeed.load()
 		
 		guard let feed = updateFeed.feed else {
@@ -37,7 +37,7 @@ class UpdateNotification {
 		return false
 	}
 	
-	func showNewVersionView() {
+	public func showNewVersionView() {
 		guard let lastItem = updateFeed.feed?.items.last else {
 			print("Feed unavailable")
 			return
@@ -57,7 +57,7 @@ class UpdateNotification {
 		controller.showWindow(nil)
 	}
 	
-	func showChangelogWindow() {
+	public func showChangelogWindow() {
 		updateFeed.load()
 		
 		guard let items = updateFeed.feed?.items else {

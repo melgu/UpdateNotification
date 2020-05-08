@@ -1,14 +1,14 @@
 import Foundation
 
-class UpdateFeedManager {
+public class UpdateFeedManager {
 	let feedUrl: URL
 	var feed: Feed?
 	
-	init(feedUrl: URL) {
+	public init(feedUrl: URL) {
 		self.feedUrl = feedUrl
 	}
 	
-	func load() {
+	public func load() {
 		let semaphore = DispatchSemaphore(value: 0)
 		let task = URLSession.shared.dataTask(with: feedUrl) { data, _, error in
 			guard error == nil else {
@@ -35,15 +35,15 @@ class UpdateFeedManager {
 		sortFeed()
 	}
 	
-	func create(website: URL) {
+	public func create(website: URL) {
 		feed = Feed(url: website, items: [])
 	}
 	
-	func clearItems() {
+	public func clearItems() {
 		feed?.items = []
 	}
 	
-	func add(item: Item) {
+	public func add(item: Item) {
 		if feed != nil {
 			feed!.items.append(item)
 			sortFeed()
@@ -52,11 +52,11 @@ class UpdateFeedManager {
 		}
 	}
 	
-	func sortFeed() {
+	private func sortFeed() {
 		feed?.items.sort()
 	}
 	
-	func write(to location: URL) {
+	public func write(to location: URL) {
 		guard let feed = feed else {
 			print("Feed is nil. Need to load or create feed first.")
 			return

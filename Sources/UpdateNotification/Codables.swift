@@ -5,8 +5,8 @@ struct Feed: Codable {
 	var items: [Item]
 }
 
-struct Item: Codable, Identifiable, Comparable {
-	var id: String { "\(version) \(String(describing: build))" }
+public struct Item: Codable, Identifiable, Comparable {
+	public var id: String { "\(version) \(String(describing: build))" }
 	var version: String
 	var build: String?
 	var date: Date?
@@ -15,7 +15,7 @@ struct Item: Codable, Identifiable, Comparable {
 	var infoUrl: URL?
 	var downloadUrl: URL?
 	
-	static func < (lhs: Item, rhs: Item) -> Bool {
+	public static func < (lhs: Item, rhs: Item) -> Bool {
 		if lhs.version == rhs.version &&
 			lhs.build != nil &&
 			rhs.build != nil {

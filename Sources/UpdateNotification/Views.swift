@@ -6,7 +6,7 @@ struct FeedView: View {
 	
 	var body: some View {
 		ScrollView {
-			VStack {
+			VStack(alignment: .leading) {
 				Text("Changelog")
 					.font(.title)
 				
@@ -23,6 +23,7 @@ struct FeedView: View {
 					Text("Couldn't load items.")
 				}
 			}
+			.padding()
 		}
 	}
 }
@@ -31,7 +32,7 @@ struct ItemView: View {
 	let item: Item
 	
 	var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			Text("Version \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
 			if item.date != nil {
 				Text(ISO8601DateFormatter().string(from: item.date!))
@@ -60,10 +61,10 @@ struct NewVersionView: View {
 	
 	var body: some View {
 		ScrollView {
-			VStack {
-				Text("New Version available: \(item.version)\(item.build != nil ? "\(item.build!)" : "")")
+			VStack(alignment: .leading) {
+				Text("New Version available: \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
 					.font(.title)
-				Text("Current Version: \(currentVersion) (\(currentBuild)")
+				Text("Current Version: \(currentVersion) (\(currentBuild))")
 				Divider()
 				if item.title != nil {
 					Text(item.title!)
@@ -71,6 +72,9 @@ struct NewVersionView: View {
 				}
 				if item.text != nil {
 					Text(item.text!)
+				}
+				if item.date != nil {
+					Text(ISO8601DateFormatter().string(from: item.date!))
 				}
 				HStack {
 					Spacer(minLength: 0)
@@ -92,6 +96,7 @@ struct NewVersionView: View {
 					}
 				}
 			}
+			.padding()
 		}
 	}
 }

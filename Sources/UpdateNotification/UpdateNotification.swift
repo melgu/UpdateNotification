@@ -37,10 +37,10 @@ class UpdateNotification {
 		return false
 	}
 	
-	@available(OSX 10.15, *)
 	func showNewVersionView() {
 		guard let lastItem = updateFeed.feed?.items.last else {
 			print("Feed unavailable")
+			return
 		}
 		
 		var currentVersion = "Unknown"
@@ -57,7 +57,6 @@ class UpdateNotification {
 		controller.showWindow(nil)
 	}
 	
-	@available(OSX 10.15, *)
 	func showChangelogWindow() {
 		updateFeed.load()
 		

@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-@available(OSX 10.15, *)
 struct FeedView: View {
 	let items: [Item]?
 	
@@ -28,7 +27,6 @@ struct FeedView: View {
 	}
 }
 
-@available(OSX 10.15, *)
 struct ItemView: View {
 	let item: Item
 	
@@ -54,8 +52,6 @@ struct ItemView: View {
 	}
 }
 
-
-@available(OSX 10.15, *)
 struct NewVersionView: View {
 	let item: Item
 	let currentVersion: String
@@ -80,7 +76,6 @@ struct NewVersionView: View {
 	}
 }
 
-@available(OSX 10.15, *)
 class ResizableWindowController<RootView: View>: NSWindowController {
 	convenience init(rootView: RootView, width: Int = 420, height: Int = 640) {
 		let hostingController = NSHostingController(rootView: rootView)

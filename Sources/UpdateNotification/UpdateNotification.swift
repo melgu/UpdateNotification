@@ -50,7 +50,7 @@ public class UpdateNotification {
 		(currentVersion, currentBuild) = getVersionInfo()
 		
 		let controller = ResizableWindowController(rootView:
-			NewVersionView(item: lastItem, currentVersion: currentVersion, currentBuild: currentBuild)
+			NewVersionView(item: lastItem, currentVersion: currentVersion, currentBuild: currentBuild, url: updateFeed.feed!.url)
 		)
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)

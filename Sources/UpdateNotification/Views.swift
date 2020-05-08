@@ -56,6 +56,7 @@ struct NewVersionView: View {
 	let item: Item
 	let currentVersion: String
 	let currentBuild: String
+	let url: URL
 	
 	var body: some View {
 		ScrollView {
@@ -70,6 +71,26 @@ struct NewVersionView: View {
 				}
 				if item.text != nil {
 					Text(item.text!)
+				}
+				HStack {
+					Spacer(minLength: 0)
+					Button(action: {
+						if self.item.infoUrl != nil {
+							NSWorkspace.shared.open(self.item.infoUrl!)
+						} else {
+							NSWorkspace.shared.open(self.url)
+						}
+					}) {
+						Text("Info")
+					}
+					if item.downloadUrl != nil {
+						Button(action: {
+							NSWorkspace.shared.open(self.item.downloadUrl!)
+						}) {
+							Text("Download")
+						}
+					}
+					
 				}
 			}
 		}

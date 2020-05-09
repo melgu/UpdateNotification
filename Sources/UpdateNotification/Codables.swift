@@ -7,13 +7,13 @@ struct Feed: Codable {
 
 public struct Item: Codable, Identifiable, Comparable {
 	public var id: String { "\(version) \(String(describing: build))" }
-	var version: String
-	var build: String?
-	var date: Date?
-	var title: String?
-	var text: String?
-	var infoUrl: URL?
-	var downloadUrl: URL?
+	public var version: String
+	public var build: String?
+	public var date: Date?
+	public var title: String?
+	public var text: String?
+	public var infoUrl: URL?
+	public var downloadUrl: URL?
 	
 	public static func < (lhs: Item, rhs: Item) -> Bool {
 		if lhs.version == rhs.version &&

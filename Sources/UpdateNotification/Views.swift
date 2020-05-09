@@ -33,21 +33,43 @@ struct ItemView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			Text("Version \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
-			if item.date != nil {
-				Text(ISO8601DateFormatter().string(from: item.date!))
-			}
 			if item.title != nil {
 				Text(item.title!)
+					.font(.headline)
 			}
+			HStack {
+				Text("Version \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
+				if item.date != nil {
+					Text("–")
+					Text("Release:")
+					Text(ISO8601DateFormatter().string(from: item.date!))
+				}
+			}
+			.foregroundColor(.gray)
 			if item.text != nil {
 				Text(item.text!)
 			}
 			if item.infoUrl != nil {
-				Text(item.infoUrl!.absoluteString)
+				HStack {
+					Text("Info:")
+					Text(item.infoUrl!.absoluteString)
+						.underline()
+						.foregroundColor(.blue)
+						.onTapGesture {
+							NSWorkspace.shared.open(self.item.infoUrl!)
+					}
+				}
 			}
 			if item.downloadUrl != nil {
-				Text(item.downloadUrl!.absoluteString)
+				HStack {
+					Text("Download:")
+					Text(item.downloadUrl!.absoluteString)
+						.underline()
+						.foregroundColor(.blue)
+						.onTapGesture {
+							NSWorkspace.shared.open(self.item.downloadUrl!)
+					}
+				}
 			}
 		}
 	}
@@ -62,19 +84,20 @@ struct NewVersionView: View {
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
-				Text("New Version available: \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
+				Text("New version available")
 					.font(.title)
-				Text("Current Version: \(currentVersion) (\(currentBuild))")
+				Text("New version: \(item.version)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
 				Divider()
 				if item.title != nil {
 					Text(item.title!)
-						.font(.title)
+						.font(.headline)
 				}
 				if item.text != nil {
 					Text(item.text!)
 				}
 				if item.date != nil {
-					Text(ISO8601DateFormatter().string(from: item.date!))
+					Text("Release: \(ISO8601DateFormatter().string(from: item.date!))")
+						.foregroundColor(.gray)
 				}
 				HStack {
 					Spacer(minLength: 0)
@@ -85,14 +108,16 @@ struct NewVersionView: View {
 							NSWorkspace.shared.open(self.url)
 						}
 					}) {
-						Text("Info")
+						Text("More Info")
 					}
-					if item.downloadUrl != nil {
-						Button(action: {
+					Button(action: {
+						if self.item.downloadUrl != nil {
 							NSWorkspace.shared.open(self.item.downloadUrl!)
-						}) {
-							Text("Download")
+						} else {
+							NSWorkspace.shared.open(self.url)
 						}
+					}) {
+						Text("Download")
 					}
 				}
 			}

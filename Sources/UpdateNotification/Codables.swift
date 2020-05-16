@@ -5,6 +5,7 @@ struct Feed: Codable {
 	var items: [Item]
 }
 
+/// An item describes a release in the update feed
 public struct Item: Codable, Identifiable, Comparable {
 	public var id: String { "\(version) \(String(describing: build))" }
 	var version: String
@@ -15,6 +16,15 @@ public struct Item: Codable, Identifiable, Comparable {
 	var infoUrl: URL?
 	var downloadUrl: URL?
 	
+	/// Initialize the `Item` struct
+	/// - Parameters:
+	///   - version: semantic version number
+	///   - build: (optional) build string, relevant if there are multiple releases for the same version
+	///   - date: (optional) release date
+	///   - title: (optional) update title
+	///   - text: (optional) update text
+	///   - infoUrl: (optional) URL to the a location with more info about the update
+	///   - downloadUrl: (optional) URL to the download location
 	public init(version: String, build: String? = nil, date: Date? = nil, title: String? = nil, text: String? = nil, infoUrl: URL? = nil, downloadUrl: URL? = nil) {
 		self.version = version
 		self.build = build
@@ -25,6 +35,7 @@ public struct Item: Codable, Identifiable, Comparable {
 		self.downloadUrl = downloadUrl
 	}
 	
+	/// Compare two items based the first their version number and second their build identifier
 	public static func < (lhs: Item, rhs: Item) -> Bool {
 		if lhs.version == rhs.version &&
 			lhs.build != nil &&

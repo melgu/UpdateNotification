@@ -1,13 +1,18 @@
 import Foundation
 
+/// The `UpdateFeedManager` class contains functions to create and edit update feeds.
 public class UpdateFeedManager {
 	let feedUrl: URL
 	var feed: Feed?
 	
+	
+	/// Initialize the UpdateFeedManager class.
+	/// - Parameter feedUrl: The URL to the JSON update feed, used when loading an already existing feed.
 	public init(feedUrl: URL) {
 		self.feedUrl = feedUrl
 	}
 	
+	/// Load an existing feed from the URL the class was initialized with.
 	public func load() {
 		let semaphore = DispatchSemaphore(value: 0)
 		let task = URLSession.shared.dataTask(with: feedUrl) { data, _, error in
@@ -35,14 +40,20 @@ public class UpdateFeedManager {
 		sortFeed()
 	}
 	
+	/// Create a new feed
+	/// - Parameter website: The main website URL
+	/// - Important: The website URL is not the URL to the JSON update feed, but the website shown to the user
 	public func create(website: URL) {
 		feed = Feed(url: website, items: [])
 	}
 	
+	/// Clear all itmes in the feed.
 	public func clearItems() {
 		feed?.items = []
 	}
 	
+	/// Add an item to the update feed.
+	/// - Parameter item: The item to be added
 	public func add(item: Item) {
 		if feed != nil {
 			feed!.items.append(item)
@@ -56,6 +67,9 @@ public class UpdateFeedManager {
 		feed?.items.sort()
 	}
 	
+	/// Write the feed to disk
+	/// - Parameter location: The local URL where the feed is written to
+	/// - Important: The location url needs to include the actual filename.
 	public func write(to location: URL) {
 		guard let feed = feed else {
 			print("UpdateNotification: Feed is nil. Need to load or create feed first.")

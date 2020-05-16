@@ -1,12 +1,18 @@
 import Foundation
 
+
+/// The `UpdateNotification` class contains functions to check for updates and display relevant views.
 public class UpdateNotification {
 	let updateFeed: UpdateFeedManager
 	
+	/// Initialize the UpdateNotification class.
+	/// - Parameter feedUrl: The URL to the JSON update feed
 	public init(feedUrl: URL) {
 		self.updateFeed = UpdateFeedManager(feedUrl: feedUrl)
 	}
 	
+	/// Compare the latest version in the update feed to the currently installed version.
+	/// - Returns: A boolean if a newer version is available
 	public func checkForUpdates() -> Bool {
 		var currentVersion, currentBuild: String
 		(currentVersion, currentBuild) = getVersionInfo()
@@ -40,6 +46,7 @@ public class UpdateNotification {
 		return false
 	}
 	
+	/// Show the `NewVersionView` in a new window.
 	public func showNewVersionView() {
 		guard let lastItem = updateFeed.feed?.items.last else {
 			print("UpdateNotification: Feed unavailable")
@@ -56,6 +63,7 @@ public class UpdateNotification {
 		controller.showWindow(nil)
 	}
 	
+	/// Show the changelog` in a new window.
 	public func showChangelogWindow() {
 		updateFeed.load()
 		

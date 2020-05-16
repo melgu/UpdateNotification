@@ -19,7 +19,7 @@ public struct Item: Codable, Identifiable, Comparable {
 	/// Initialize the `Item` struct
 	/// - Parameters:
 	///   - version: semantic version number
-	///   - build: (optional) build string, relevant if there are multiple releases for the same version
+	///   - build: (optional) build identifier, relevant if there are multiple releases for the same version
 	///   - date: (optional) release date
 	///   - title: (optional) update title
 	///   - text: (optional) update text
@@ -35,7 +35,7 @@ public struct Item: Codable, Identifiable, Comparable {
 		self.downloadUrl = downloadUrl
 	}
 	
-	/// Compare two items based the first their version number and second their build identifier
+	/// Compare two items based first on their version number and second on their build identifier
 	public static func < (lhs: Item, rhs: Item) -> Bool {
 		if lhs.version == rhs.version &&
 			lhs.build != nil &&

@@ -63,7 +63,7 @@ public class UpdateNotification {
 		controller.showWindow(nil)
 	}
 	
-	/// Show the changelog` in a new window.
+	/// Show the changelog in a new window.
 	public func showChangelogWindow() {
 		updateFeed.load()
 		

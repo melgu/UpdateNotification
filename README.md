@@ -4,7 +4,7 @@ Display a notification about pending app updates.
 Once a new update is available, a prompt will appear that sends the user to the specified website to download the update.
 Update info is stored in a JSON file on a web server that can be specified.
 
-Full documentation: [http://melvin-gundlach.de/Documentation/UpdateNotification/]()
+Full documentation: [](http://melvin-gundlach.de/Documentation/UpdateNotification/)
 
 ## Example Integration
 

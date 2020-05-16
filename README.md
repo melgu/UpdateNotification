@@ -36,9 +36,7 @@ updateNotification.showNewVersionView()
 Open a new window displaying the full changelog.
 
 ```swift
-if updateNotification.checkForUpdates() {
-	updateNotification.showNewVersionView()
-}
+updateNotification.showChangelogWindow()
 ```
 
 ## Feed Management
@@ -62,12 +60,12 @@ manager.create(website: URL(string: "https://website.url/app")!)
 manager.load()
 
 let item = Item(version: "1.1.0",
-				build: "1",
-				date: Date(),
-				title: "First Update",
-				text: "Add customization options.",
-				infoUrl: URL(string: "https://website.url/app/version101")!,
-				downloadUrl: URL(string: "https://website.url/app/version101/download")!)
+                build: "1",
+                date: Date(),
+                title: "First Update",
+                text: "Add customization options.",
+                infoUrl: URL(string: "https://website.url/app/version101")!,
+                downloadUrl: URL(string: "https://website.url/app/version101/download")!)
 
 manager.add(item: item)
 ```
@@ -87,9 +85,9 @@ This example saves the JSON file to the Downloads folder.
 
 ```swift
 var path = try! FileManager.default.url(for: .downloadsDirectory,
-										   in: .userDomainMask,
-										   appropriateFor: nil,
-										   create: false)
+                                        in: .userDomainMask,
+                                        appropriateFor: nil,
+                                        create: false)
 path.appendPathComponent("feed.json")
 manager.write(to: path)
 ```
@@ -104,26 +102,26 @@ You can also just create and manage the feed without using the provided function
 
 ```json
 {
-	"url": "https://website.url/app",
-	"items": [
-		{
-			"version": "1.1.0",
-			"build": 2,
-			"date": "",
-			"title": "First Update",
-			"text": "Add customization options.",
-			"infoUrl": "https://website.url/app/version101",
-			"downloadUrl": "https://website.url/app/version101/download"
-		},
-		{
-			"version": "1.0.0",
-			"build": 1,
-			"date": "",
-			"title": "Initial Release",
-			"text": "This is the first iteration.",
-			"infoUrl": "https://website.url/app/version100",
-			"downloadUrl": "https://website.url/app/version100/download"
-		},
-	]
+    "url": "https://website.url/app",
+    "items": [
+        {
+            "version": "1.1.0",
+            "build": 2,
+            "date": "",
+            "title": "First Update",
+            "text": "Add customization options.",
+            "infoUrl": "https://website.url/app/version101",
+            "downloadUrl": "https://website.url/app/version101/download"
+        },
+        {
+            "version": "1.0.0",
+            "build": 1,
+            "date": "",
+            "title": "Initial Release",
+            "text": "This is the first iteration.",
+            "infoUrl": "https://website.url/app/version100",
+            "downloadUrl": "https://website.url/app/version100/download"
+        },
+    ]
 }
 ```

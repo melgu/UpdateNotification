@@ -24,18 +24,18 @@ public class UpdateNotification {
 			return false
 		}
 		
-		guard let lastItem = feed.items.last else {
+		guard let firstItem = feed.items.first else {
 			print("UpdateNotification: No items in feed.")
 			return false
 		}
 		
-		if lastItem.version > currentVersion {
+		if firstItem.version > currentVersion {
 			print("UpdateNotification: New version available.")
 			return true
 		}
 		
-		if let itemBuild = lastItem.build {
-			if lastItem.version == currentVersion &&
+		if let itemBuild = firstItem.build {
+			if firstItem.version == currentVersion &&
 				itemBuild > currentBuild {
 				print("UpdateNotification: New version available.")
 				return true
@@ -48,7 +48,7 @@ public class UpdateNotification {
 	
 	/// Show the `NewVersionView` in a new window.
 	public func showNewVersionView() {
-		guard let lastItem = updateFeed.feed?.items.last else {
+		guard let firstItem = updateFeed.feed?.items.first else {
 			print("UpdateNotification: Feed unavailable")
 			return
 		}
@@ -57,7 +57,7 @@ public class UpdateNotification {
 		(currentVersion, currentBuild) = getVersionInfo()
 		
 		let controller = ResizableWindowController(rootView:
-			NewVersionView(item: lastItem, currentVersion: currentVersion, currentBuild: currentBuild, url: updateFeed.feed!.url)
+			NewVersionView(item: firstItem, currentVersion: currentVersion, currentBuild: currentBuild, url: updateFeed.feed!.url)
 		)
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)

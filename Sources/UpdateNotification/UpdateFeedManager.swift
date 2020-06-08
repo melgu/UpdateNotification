@@ -5,7 +5,6 @@ public class UpdateFeedManager {
 	let feedUrl: URL
 	var feed: Feed?
 	
-	
 	/// Initialize the UpdateFeedManager class.
 	/// - Parameter feedUrl: The URL to the JSON update feed, used when loading an already existing feed.
 	public init(feedUrl: URL) {
@@ -65,6 +64,7 @@ public class UpdateFeedManager {
 	
 	private func sortFeed() {
 		feed?.items.sort()
+		feed?.items.reverse()
 	}
 	
 	/// Write the feed to disk

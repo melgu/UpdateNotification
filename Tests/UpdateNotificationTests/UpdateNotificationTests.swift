@@ -23,10 +23,15 @@ final class UpdateNotificationTests: XCTestCase {
     }
 	
 	func testLoad() {
-		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!)
+		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
 		manager.load()
 		
-		let data = try? JSONEncoder().encode(manager.feed!)
+		guard let feed = manager.feed else {
+			XCTFail("manager.feed is nil")
+			return
+		}
+		
+		let data = try? JSONEncoder().encode(feed)
 		print(String(data: data!, encoding: String.Encoding.utf8) ?? "nil")
 	}
 

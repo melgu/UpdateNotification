@@ -13,6 +13,7 @@ public struct Item: Codable, Identifiable, Comparable {
 	var date: Date?
 	var title: String?
 	var text: String?
+	var minOSVersion: OperatingSystemVersion?
 	var infoUrl: URL?
 	var downloadUrl: URL?
 	
@@ -23,14 +24,16 @@ public struct Item: Codable, Identifiable, Comparable {
 	///   - date: (optional) release date
 	///   - title: (optional) update title
 	///   - text: (optional) update text
+	///   - minOSVersion: (optional) minimum reqired OS version
 	///   - infoUrl: (optional) URL to the a location with more info about the update
 	///   - downloadUrl: (optional) URL to the download location
-	public init(version: String, build: String? = nil, date: Date? = nil, title: String? = nil, text: String? = nil, infoUrl: URL? = nil, downloadUrl: URL? = nil) {
+	public init(version: String, build: String? = nil, date: Date? = nil, title: String? = nil, text: String? = nil, minOSVersion: OperatingSystemVersion?, infoUrl: URL? = nil, downloadUrl: URL? = nil) {
 		self.version = version
 		self.build = build
 		self.date = date
 		self.title = title
 		self.text = text
+		self.minOSVersion = minOSVersion
 		self.infoUrl = infoUrl
 		self.downloadUrl = downloadUrl
 	}

@@ -31,6 +31,16 @@ public class UpdateNotification {
 		
 		if firstItem.version > currentVersion {
 			print("UpdateNotification: New version available.")
+			
+			if let minOSVersion = firstItem.minOSVersion,
+			   !ProcessInfo().isOperatingSystemAtLeast(minOSVersion) {
+				print("""
+					Local OS version \(ProcessInfo().operatingSystemVersion) \
+					is lower than required OS version \(minOSVersion)
+				""")
+				return false
+			}
+			
 			return true
 		}
 		

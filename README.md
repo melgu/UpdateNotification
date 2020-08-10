@@ -64,6 +64,7 @@ let item = Item(version: "1.1.0",
                 date: Date(),
                 title: "First Update",
                 text: "Add customization options.",
+                minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
                 infoUrl: URL(string: "https://website.url/app/version101")!,
                 downloadUrl: URL(string: "https://website.url/app/version101/download")!)
 
@@ -110,6 +111,7 @@ You can also just create and manage the feed without using the provided function
             "date": "",
             "title": "First Update",
             "text": "Add customization options.",
+            minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
             "infoUrl": "https://website.url/app/version101",
             "downloadUrl": "https://website.url/app/version101/download"
         },
@@ -119,6 +121,7 @@ You can also just create and manage the feed without using the provided function
             "date": "",
             "title": "Initial Release",
             "text": "This is the first iteration.",
+            minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
             "infoUrl": "https://website.url/app/version100",
             "downloadUrl": "https://website.url/app/version100/download"
         },

@@ -14,6 +14,7 @@ public class UpdateFeedManager {
 	/// Load an existing feed from the URL the class was initialized with.
 	public func load() {
 		let semaphore = DispatchSemaphore(value: 0)
+		URLCache.shared.removeAllCachedResponses()
 		let task = URLSession.shared.dataTask(with: feedUrl) { data, _, error in
 			guard error == nil else {
 				print("UpdateNotification: Load: \(error!)")

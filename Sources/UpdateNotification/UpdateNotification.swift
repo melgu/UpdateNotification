@@ -3,12 +3,12 @@ import Foundation
 
 /// The `UpdateNotification` class contains functions to check for updates and display relevant views.
 public class UpdateNotification {
-	let updateFeed: UpdateFeedManager
+	public let feedManager: UpdateFeedManager
 	
 	/// Initialize the UpdateNotification class.
 	/// - Parameter feedUrl: The URL to the JSON update feed
 	public init(feedUrl: URL) {
-		self.updateFeed = UpdateFeedManager(feedUrl: feedUrl)
+		self.feedManager = UpdateFeedManager(feedUrl: feedUrl)
 	}
 	
 	/// Compare the latest version in the update feed to the currently installed version.
@@ -17,9 +17,9 @@ public class UpdateNotification {
 		var currentVersion, currentBuild: String
 		(currentVersion, currentBuild) = getVersionInfo()
 		
-		updateFeed.load()
+		feedManager.load()
 		
-		guard let feed = updateFeed.feed else {
+		guard let feed = feedManager.feed else {
 			print("UpdateNotification: Feed unavailable.")
 			return false
 		}
@@ -58,7 +58,7 @@ public class UpdateNotification {
 	
 	/// Show the `NewVersionView` in a new window.
 	public func showNewVersionView() {
-		guard let firstItem = updateFeed.feed?.items.first else {
+		guard let firstItem = feedManager.feed?.items.first else {
 			print("UpdateNotification: Feed unavailable")
 			return
 		}
@@ -67,7 +67,7 @@ public class UpdateNotification {
 		(currentVersion, currentBuild) = getVersionInfo()
 		
 		let controller = ResizableWindowController(rootView:
-			NewVersionView(item: firstItem, currentVersion: currentVersion, currentBuild: currentBuild, url: updateFeed.feed!.url)
+			NewVersionView(item: firstItem, currentVersion: currentVersion, currentBuild: currentBuild, url: feedManager.feed!.url)
 		)
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)
@@ -75,9 +75,9 @@ public class UpdateNotification {
 	
 	/// Show the changelog in a new window.
 	public func showChangelogWindow() {
-		updateFeed.load()
+		feedManager.load()
 		
-		guard let items = updateFeed.feed?.items else {
+		guard let items = feedManager.feed?.items else {
 			print("UpdateNotification: Feed unavailable")
 			return
 		}

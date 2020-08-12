@@ -85,4 +85,21 @@ public class UpdateFeedManager {
 			print("UpdateNotification: \(error)")
 		}
 	}
+	
+	/// Log the feed and its content to the console
+	public func logFeed() {
+		guard let feed = feed else {
+			print("UpdateNotification: Feed is nil. Need to load or create feed first.")
+			return
+		}
+		
+		print("--- Feed ---")
+		print("Feed URL: \(feed.url)")
+		print("Number of items: \(feed.items.count)")
+		
+		for item in feed.items {
+			print("id: \(item.id), date: \(item.date.debugDescription), minOSVersion: \(item.minOSVersion.debugDescription), title: \(item.title.debugDescription), text: \(item.text.debugDescription)")
+		}
+		print("------------")
+	}
 }

@@ -7,7 +7,7 @@ struct Feed: Codable {
 
 /// An item describes a release in the update feed
 public struct Item: Codable, Identifiable, Comparable {
-	public var id: String { "\(version) \(String(describing: build))" }
+	public var id: String { "\(version)-\(build ?? "")" }
 	var version: String
 	var build: String?
 	var date: Date?

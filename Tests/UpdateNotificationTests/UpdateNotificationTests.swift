@@ -47,10 +47,17 @@ final class UpdateNotificationTests: XCTestCase {
 			isOperatingSystemAtLeast: \(ProcessInfo().isOperatingSystemAtLeast(minOSVersion))
 		""")
 	}
+	
+	func testLogFeed() {
+		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
+		manager.load()
+		manager.logFeed()
+	}
 
     static var allTests = [
         ("testCreate", testCreate),
 		("testLoad", testLoad),
-		("testOSVersion", testOSVersion)
+		("testOSVersion", testOSVersion),
+		("testLogFeed", testLogFeed)
     ]
 }

@@ -33,8 +33,11 @@ final class UpdateNotificationTests: XCTestCase {
 			return
 		}
 		
-		let data = try? JSONEncoder().encode(feed)
-		print(String(data: data!, encoding: String.Encoding.utf8) ?? "nil")
+		guard let data = try? JSONEncoder().encode(feed) else {
+			XCTFail("Can't encode feed to JSON")
+			return
+		}
+		print(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
 	}
 	
 	func testOSVersion() {
@@ -49,7 +52,7 @@ final class UpdateNotificationTests: XCTestCase {
 	}
 	
 	func testLogFeed() {
-		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
+		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/Denon-Volume.json")!)
 		manager.load()
 		manager.logFeed()
 	}

@@ -53,7 +53,7 @@ struct ItemView: View {
 			}
 			.foregroundColor(.gray)
 			if let minOSVersion = item.minOSVersion {
-				Text("Minimum OS: \(minOSVersion.majorVersion).\(minOSVersion.minorVersion).\(minOSVersion.patchVersion)")
+				Text("Minimum OS: \(minOSVersion.string)")
 					.foregroundColor(ProcessInfo().isOperatingSystemAtLeast(minOSVersion) ? .gray : .red)
 			}
 			if item.text != nil {

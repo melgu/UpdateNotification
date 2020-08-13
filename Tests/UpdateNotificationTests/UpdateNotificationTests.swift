@@ -41,14 +41,22 @@ final class UpdateNotificationTests: XCTestCase {
 	}
 	
 	func testOSVersion() {
-		let minOSVersion = OperatingSystemVersion(majorVersion: 10,minorVersion: 15, patchVersion: 0)
-		let systemOSVersion = ProcessInfo().operatingSystemVersion
+		let os0p0p0 = OperatingSystemVersion(majorVersion: 0, minorVersion: 0, patchVersion: 0)
+		let os10p0p0 = OperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0)
+		let os11p0p0 = OperatingSystemVersion(majorVersion: 11, minorVersion: 0, patchVersion: 0)
+		let os11p1p0 = OperatingSystemVersion(majorVersion: 11, minorVersion: 1, patchVersion: 0)
+		let os11p1p1 = OperatingSystemVersion(majorVersion: 11, minorVersion: 1, patchVersion: 1)
+		let os11p0p1 = OperatingSystemVersion(majorVersion: 11, minorVersion: 0, patchVersion: 1)
 		
-		print("""
-			minOSVersion: \(minOSVersion)
-			minOSVersion: \(systemOSVersion)
-			isOperatingSystemAtLeast: \(ProcessInfo().isOperatingSystemAtLeast(minOSVersion))
-		""")
+		XCTAssertEqual(os0p0p0.string, "0")
+		XCTAssertEqual(os10p0p0.string, "10")
+		XCTAssertEqual(os11p0p0.string, "11")
+		XCTAssertEqual(os11p1p0.string, "11.1")
+		XCTAssertEqual(os11p1p1.string, "11.1.1")
+		XCTAssertEqual(os11p0p1.string, "11.0.1")
+		
+		print("System OS Version: \(ProcessInfo().operatingSystemVersion)")
+		XCTAssertTrue(ProcessInfo().isOperatingSystemAtLeast(os10p0p0))
 	}
 	
 	func testLogFeed() {

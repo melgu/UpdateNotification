@@ -100,7 +100,7 @@ public class UpdateFeedManager {
 		print("Number of items: \(feed.items.count)")
 		
 		for item in feed.items {
-			print("id: \(item.id), date: \(item.date.debugDescription), minOSVersion: \(item.minOSVersion.debugDescription), title: \(item.title.debugDescription), text: \(item.text.debugDescription)")
+			print("id: \(item.id), date: \(item.date.debugDescription), minOSVersion: \(item.minOSVersion?.string ?? "nil"), title: \(item.title.debugDescription), text: \(item.text.debugDescription)")
 		}
 		print("------------")
 	}

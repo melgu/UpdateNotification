@@ -37,3 +37,15 @@ extension OperatingSystemVersion: Equatable {
 			&& lhs.patchVersion == rhs.patchVersion
 	}
 }
+
+extension OperatingSystemVersion {
+	var string: String {
+		if self.minorVersion == 0 && self.patchVersion == 0 {
+			return "\(self.majorVersion)"
+		}
+		if self.patchVersion == 0 {
+			return "\(self.majorVersion).\(self.minorVersion)"
+		}
+		return "\(self.majorVersion).\(self.minorVersion).\(self.patchVersion)"
+	}
+}

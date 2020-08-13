@@ -39,7 +39,7 @@ extension OperatingSystemVersion: Equatable {
 }
 
 extension OperatingSystemVersion {
-	var string: String {
+	public var string: String {
 		if self.minorVersion == 0 && self.patchVersion == 0 {
 			return "\(self.majorVersion)"
 		}

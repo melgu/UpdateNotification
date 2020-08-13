@@ -61,7 +61,10 @@ struct ItemView: View {
 			}
 			if item.infoUrl != nil {
 				HStack {
-					Text("Info:")
+					VStack {
+						Text("Info:")
+						Spacer(minLength: 0)
+					}
 					Text(item.infoUrl!.absoluteString)
 						.underline()
 						.foregroundColor(.blue)
@@ -72,7 +75,10 @@ struct ItemView: View {
 			}
 			if item.downloadUrl != nil {
 				HStack {
-					Text("Download:")
+					VStack {
+						Text("Download:")
+						Spacer(minLength: 0)
+					}
 					Text(item.downloadUrl!.absoluteString)
 						.underline()
 						.foregroundColor(.blue)

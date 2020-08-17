@@ -20,15 +20,15 @@ struct NewVersionView: View {
 					.font(.title)
 				Text("New version: \(item.version)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
 				Divider()
-				if item.title != nil {
-					Text(item.title!)
+				if let title = item.title {
+					Text(title)
 						.font(.headline)
 				}
-				if item.text != nil {
-					Text(item.text!)
+				if let text = item.text {
+					Text(text)
 				}
-				if item.date != nil {
-					Text("Release: \(ISO8601DateFormatter().string(from: item.date!))")
+				if let date = item.date {
+					Text("Release: \(ISO8601DateFormatter().string(from: date))")
 						.foregroundColor(.gray)
 				}
 				if let minOSVersion = item.minOSVersion {
@@ -38,8 +38,8 @@ struct NewVersionView: View {
 				HStack {
 					Spacer(minLength: 0)
 					Button(action: {
-						if self.item.infoUrl != nil {
-							NSWorkspace.shared.open(self.item.infoUrl!)
+						if let infoUrl = self.item.infoUrl {
+							NSWorkspace.shared.open(infoUrl)
 						} else {
 							NSWorkspace.shared.open(self.url)
 						}
@@ -47,8 +47,8 @@ struct NewVersionView: View {
 						Text("More Info")
 					}
 					Button(action: {
-						if self.item.downloadUrl != nil {
-							NSWorkspace.shared.open(self.item.downloadUrl!)
+						if let downloadUrl = self.item.downloadUrl {
+							NSWorkspace.shared.open(downloadUrl)
 						} else {
 							NSWorkspace.shared.open(self.url)
 						}

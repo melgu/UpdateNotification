@@ -16,11 +16,11 @@ struct FeedView: View {
 				Text("Changelog")
 					.font(.title)
 				
-				if items != nil {
-					if items!.isEmpty {
+				if let items = items {
+					if items.isEmpty {
 						Text("No items in feed.")
 					} else {
-						ForEach(items!) { item in
+						ForEach(items) { item in
 							ItemView(item: item)
 							Divider()
 						}
@@ -39,16 +39,16 @@ struct ItemView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			if item.title != nil {
-				Text(item.title!)
+			if let title = item.title {
+				Text(title)
 					.font(.headline)
 			}
 			HStack {
 				Text("Version \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
-				if item.date != nil {
+				if let date = item.date {
 					Text("–")
 					Text("Release:")
-					Text(ISO8601DateFormatter().string(from: item.date!))
+					Text(ISO8601DateFormatter().string(from: date))
 				}
 			}
 			.foregroundColor(.gray)
@@ -56,28 +56,28 @@ struct ItemView: View {
 				Text("Minimum OS: \(minOSVersion.string)")
 					.foregroundColor(ProcessInfo().isOperatingSystemAtLeast(minOSVersion) ? .gray : .red)
 			}
-			if item.text != nil {
-				Text(item.text!)
+			if let text = item.text {
+				Text(text)
 			}
-			if item.infoUrl != nil {
+			if let infoUrl = item.infoUrl {
 				HStack {
 					Text("Info:")
-					Text(item.infoUrl!.absoluteString)
+					Text(infoUrl.absoluteString)
 						.underline()
 						.foregroundColor(.blue)
 						.onTapGesture {
-							NSWorkspace.shared.open(self.item.infoUrl!)
+							NSWorkspace.shared.open(infoUrl)
 					}
 				}
 			}
-			if item.downloadUrl != nil {
+			if let downloadUrl = item.downloadUrl {
 				HStack {
 					Text("Download:")
-					Text(item.downloadUrl!.absoluteString)
+					Text(downloadUrl.absoluteString)
 						.underline()
 						.foregroundColor(.blue)
 						.onTapGesture {
-							NSWorkspace.shared.open(self.item.downloadUrl!)
+							NSWorkspace.shared.open(downloadUrl)
 					}
 				}
 			}

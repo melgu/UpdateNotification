@@ -62,17 +62,15 @@ struct NewVersionView: View {
 	}
 }
 
-struct NewVersionView_Previews: PreviewProvider {
-	static let item = Item(version: "1.2.3", build: "1.2.3",
-					date: Date(), title: "Demo Title",
-					text: "Demo Text",
-					minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
-					infoUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101")!,
-					downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download")!)
-	
-	static let feedUrl = URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!
-	
-    static var previews: some View {
-		NewVersionView(item: item, currentVersion: "1.2.2", currentBuild: "1.2.2", url: feedUrl)
-    }
+#Preview {
+	let item = Item(
+		version: "1.2.3", build: "1.2.3",
+		date: Date(), title: "Demo Title",
+		text: "Demo Text",
+		minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
+		infoUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101")!,
+		downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download")!
+	)
+	let feedUrl = URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!
+	NewVersionView(item: item, currentVersion: "1.2.2", currentBuild: "1.2.2", url: feedUrl)
 }

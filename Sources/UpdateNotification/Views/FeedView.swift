@@ -67,7 +67,7 @@ struct ItemView: View {
 						.foregroundColor(.blue)
 						.onTapGesture {
 							NSWorkspace.shared.open(infoUrl)
-					}
+						}
 				}
 			}
 			if let downloadUrl = item.downloadUrl {
@@ -78,7 +78,7 @@ struct ItemView: View {
 						.foregroundColor(.blue)
 						.onTapGesture {
 							NSWorkspace.shared.open(downloadUrl)
-					}
+						}
 				}
 			}
 		}
@@ -86,10 +86,6 @@ struct ItemView: View {
 }
 
 
-struct FeedView_Previews: PreviewProvider {
-    static var previews: some View {
-		Group {
-			FeedView(items: [])
-		}
-    }
+#Preview {
+    FeedView(items: [])
 }

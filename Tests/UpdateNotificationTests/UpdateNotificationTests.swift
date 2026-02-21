@@ -6,38 +6,51 @@ final class UpdateNotificationTests: XCTestCase {
 		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!)
 		manager.create(website: URL(string: "http://www.melvin-gundlach.de/apps/demo")!)
 		
-		let item1 = Item(version: "1.0.0",
-						 minOSVersion: OperatingSystemVersion(majorVersion: 10,minorVersion: 15, patchVersion: 0))
-		let item2 = Item(version: "1.0.1",
-						 build: "20",
-						 date: Date(),
-						 title: "First Update",
-						 text: "Bugfixes",
-						 minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
-						 infoUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101"),
-						 downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download"))
+		let item1 = Item(
+			version: "1.0.0",
+			minOSVersion: OperatingSystemVersion(majorVersion: 10,minorVersion: 15, patchVersion: 0)
+		)
+		let item2 = Item(
+			version: "1.0.1",
+			build: "20",
+			date: Date(),
+			title: "First Update",
+			text: "Bugfixes",
+			minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
+			infoUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101"),
+			downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download")
+		)
 		
 		manager.add(item: item1)
 		manager.add(item: item2)
 		
 		let data = try? JSONEncoder().encode(manager.feed!)
 		print(String(data: data!, encoding: String.Encoding.utf8) ?? "nil")
-    }
+	}
 	
 	func testLoad() {
 		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
-		manager.load()
+		let expectation = expectation(description: "Load feed")
 		
-		guard let feed = manager.feed else {
-			XCTFail("manager.feed is nil")
-			return
+		Task {
+			await manager.load()
+			
+			guard let feed = manager.feed else {
+				XCTFail("manager.feed is nil")
+				expectation.fulfill()
+				return
+			}
+			
+			guard let data = try? JSONEncoder().encode(feed) else {
+				XCTFail("Can't encode feed to JSON")
+				expectation.fulfill()
+				return
+			}
+			print(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
+			expectation.fulfill()
 		}
 		
-		guard let data = try? JSONEncoder().encode(feed) else {
-			XCTFail("Can't encode feed to JSON")
-			return
-		}
-		print(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
+		waitForExpectations(timeout: 10)
 	}
 	
 	func testOSVersion() {
@@ -61,14 +74,21 @@ final class UpdateNotificationTests: XCTestCase {
 	
 	func testLogFeed() {
 		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/Denon-Volume.json")!)
-		manager.load()
-		manager.logFeed()
+		let expectation = expectation(description: "Load and log feed")
+		
+		Task {
+			await manager.load()
+			manager.logFeed()
+			expectation.fulfill()
+		}
+		
+		waitForExpectations(timeout: 10)
 	}
-
-    static var allTests = [
-        ("testCreate", testCreate),
+	
+	static var allTests = [
+		("testCreate", testCreate),
 		("testLoad", testLoad),
 		("testOSVersion", testOSVersion),
 		("testLogFeed", testLogFeed)
-    ]
+	]
 }

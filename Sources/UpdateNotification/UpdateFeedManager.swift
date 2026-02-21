@@ -12,33 +12,21 @@ public class UpdateFeedManager {
 	}
 	
 	/// Load an existing feed from the URL the class was initialized with.
-	public func load() {
-		let semaphore = DispatchSemaphore(value: 0)
-		
+	public func load() async {
 		let request = URLRequest(url: feedUrl, cachePolicy: .reloadIgnoringCacheData)
-		let task = URLSession.shared.dataTask(with: request) { data, _, error in
-			guard error == nil else {
-				print("UpdateNotification: Load: \(error!)")
-				semaphore.signal()
-				return
-			}
-			guard let data = data else {
-				print("UpdateNotification: Load: No data.")
-				semaphore.signal()
-				return
-			}
+		
+		do {
+			let (data, _) = try await URLSession.shared.data(for: request)
 			guard let feed = try? JSONDecoder().decode(Feed.self, from: data) else {
 				print("UpdateNotification: Load: Couldn't decode JSON.")
-				semaphore.signal()
 				return
 			}
 			
 			self.feed = feed
-			semaphore.signal()
+			sortFeed()
+		} catch {
+			print("UpdateNotification: Load: \(error)")
 		}
-		task.resume()
-		semaphore.wait()
-		sortFeed()
 	}
 	
 	/// Create a new feed

@@ -13,11 +13,11 @@ public class UpdateNotification {
 	
 	/// Compare the latest version in the update feed to the currently installed version.
 	/// - Returns: A boolean if a newer version is available
-	public func checkForUpdates() -> Bool {
+	public func checkForUpdates() async -> Bool {
 		var currentVersion, currentBuild: String
 		(currentVersion, currentBuild) = getVersionInfo()
 		
-		feedManager.load()
+		await feedManager.load()
 		
 		guard let feed = feedManager.feed else {
 			print("UpdateNotification: Feed unavailable.")
@@ -74,8 +74,9 @@ public class UpdateNotification {
 	}
 	
 	/// Show the changelog in a new window.
-	public func showChangelogWindow() {
-		feedManager.load()
+	@MainActor
+	public func showChangelogWindow() async {
+		await feedManager.load()
 		
 		guard let items = feedManager.feed?.items else {
 			print("UpdateNotification: Feed unavailable")

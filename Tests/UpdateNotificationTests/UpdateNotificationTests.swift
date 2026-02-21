@@ -2,6 +2,7 @@ import Foundation
 import Testing
 @testable import UpdateNotification
 
+@MainActor
 struct UpdateNotificationTests {
     @Test
     func create() throws {

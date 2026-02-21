@@ -14,8 +14,8 @@ public enum UpdateFeedError: LocalizedError {
 }
 
 /// The `UpdateFeedManager` class contains functions to create and edit update feeds.
-@Observable
-public class UpdateFeedManager {
+@Observable @MainActor
+public final class UpdateFeedManager {
 	let feedUrl: URL
 	var feed: Feed?
 	

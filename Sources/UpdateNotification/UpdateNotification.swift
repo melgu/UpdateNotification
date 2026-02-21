@@ -2,7 +2,8 @@ import Foundation
 import SwiftUI
 
 /// The `UpdateNotification` class contains functions to check for updates and display relevant views.
-public class UpdateNotification {
+@MainActor
+public final class UpdateNotification {
 	/// Manages loading and exposing update feed data for this notifier.
 	public let feedManager: UpdateFeedManager
 	
@@ -66,6 +67,7 @@ public class UpdateNotification {
 	
 	/// Build and return the `NewVersionView`.
 	/// - Returns: A configured `NewVersionView`
+	@MainActor
 	public func newVersionView() -> some View {
 		NewVersionView(feedManager: feedManager)
 	}
@@ -80,6 +82,7 @@ public class UpdateNotification {
 	
 	/// Build and return the changelog view.
 	/// - Returns: A configured `FeedView`
+	@MainActor
 	public func changelogView() async throws -> some View {
 		FeedView(feedManager: feedManager)
 	}

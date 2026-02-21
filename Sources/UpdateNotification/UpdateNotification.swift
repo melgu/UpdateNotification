@@ -13,19 +13,17 @@ public class UpdateNotification {
 	
 	/// Compare the latest version in the update feed to the currently installed version.
 	/// - Returns: A boolean if a newer version is available
-	public func checkForUpdates() async -> Bool {
+	public func checkForUpdates() async throws -> Bool {
 		var currentVersion, currentBuild: String
 		(currentVersion, currentBuild) = getVersionInfo()
 		
-		await feedManager.load()
+		try await feedManager.load()
 		
 		guard let feed = feedManager.feed else {
-			print("UpdateNotification: Feed unavailable.")
-			return false
+			throw UpdateFeedError.feedNotLoaded
 		}
 		
 		guard let firstItem = feed.items.first else {
-			print("UpdateNotification: No items in feed.")
 			return false
 		}
 		
@@ -57,10 +55,9 @@ public class UpdateNotification {
 	}
 	
 	/// Show the `NewVersionView` in a new window.
-	public func showNewVersionView() {
+	public func showNewVersionView() throws {
 		guard let firstItem = feedManager.feed?.items.first else {
-			print("UpdateNotification: Feed unavailable")
-			return
+			throw UpdateFeedError.feedNotLoaded
 		}
 		
 		var currentVersion, currentBuild: String
@@ -75,12 +72,11 @@ public class UpdateNotification {
 	
 	/// Show the changelog in a new window.
 	@MainActor
-	public func showChangelogWindow() async {
-		await feedManager.load()
+	public func showChangelogWindow() async throws {
+		try await feedManager.load()
 		
 		guard let items = feedManager.feed?.items else {
-			print("UpdateNotification: Feed unavailable")
-			return
+			throw UpdateFeedError.feedNotLoaded
 		}
 		
 		let controller = ResizableWindowController(rootView:

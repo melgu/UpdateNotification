@@ -1,5 +1,18 @@
 import Foundation
 
+/// Errors that can occur when working with an update feed.
+public enum UpdateFeedError: LocalizedError {
+	/// Feed is nil. Need to load or create feed first.
+	case feedNotLoaded
+
+	public var errorDescription: String? {
+		switch self {
+		case .feedNotLoaded:
+			"Feed is nil. Need to load or create feed first."
+		}
+	}
+}
+
 /// The `UpdateFeedManager` class contains functions to create and edit update feeds.
 public class UpdateFeedManager {
 	let feedUrl: URL
@@ -12,21 +25,12 @@ public class UpdateFeedManager {
 	}
 	
 	/// Load an existing feed from the URL the class was initialized with.
-	public func load() async {
+	public func load() async throws {
 		let request = URLRequest(url: feedUrl, cachePolicy: .reloadIgnoringCacheData)
 		
-		do {
-			let (data, _) = try await URLSession.shared.data(for: request)
-			guard let feed = try? JSONDecoder().decode(Feed.self, from: data) else {
-				print("UpdateNotification: Load: Couldn't decode JSON.")
-				return
-			}
-			
-			self.feed = feed
-			sortFeed()
-		} catch {
-			print("UpdateNotification: Load: \(error)")
-		}
+		let (data, _) = try await URLSession.shared.data(for: request)
+		self.feed = try JSONDecoder().decode(Feed.self, from: data)
+		sortFeed()
 	}
 	
 	/// Create a new feed
@@ -43,13 +47,12 @@ public class UpdateFeedManager {
 	
 	/// Add an item to the update feed.
 	/// - Parameter item: The item to be added
-	public func add(item: Item) {
-		if feed != nil {
-			feed!.items.append(item)
-			sortFeed()
-		} else {
-			print("UpdateNotification: Feed is nil. Need to load or create feed first.")
+	public func add(item: Item) throws {
+		guard feed != nil else {
+			throw UpdateFeedError.feedNotLoaded
 		}
+		feed!.items.append(item)
+		sortFeed()
 	}
 	
 	private func sortFeed() {
@@ -60,33 +63,26 @@ public class UpdateFeedManager {
 	/// Write the feed to disk
 	/// - Parameter location: The local URL where the feed is written to
 	/// - Important: The location url needs to include the actual filename.
-	public func write(to location: URL) {
+	public func write(to location: URL) throws {
 		guard let feed = feed else {
-			print("UpdateNotification: Feed is nil. Need to load or create feed first.")
-			return
+			throw UpdateFeedError.feedNotLoaded
 		}
-		do {
-			let data = try JSONEncoder().encode(feed)
-			if FileManager.default.fileExists(atPath: location.relativePath) {
-				try FileManager.default.removeItem(atPath: location.relativePath)
-			}
-			FileManager.default.createFile(atPath: location.relativePath, contents: data)
-		} catch {
-			print("UpdateNotification: \(error)")
+		let data = try JSONEncoder().encode(feed)
+		if FileManager.default.fileExists(atPath: location.relativePath) {
+			try FileManager.default.removeItem(atPath: location.relativePath)
 		}
+		FileManager.default.createFile(atPath: location.relativePath, contents: data)
 	}
 	
 	/// Log the feed and its content to the console
-	public func logFeed() {
+	public func logFeed() throws {
 		guard let feed = feed else {
-			print("UpdateNotification: Feed is nil. Need to load or create feed first.")
-			return
+			throw UpdateFeedError.feedNotLoaded
 		}
 		
 		print("--- Feed ---")
 		print("Feed URL: \(feed.url)")
 		print("Number of items: \(feed.items.count)")
-		
 		for item in feed.items {
 			print("id: \(item.id), date: \(item.date.debugDescription), minOSVersion: \(item.minOSVersion?.string ?? "nil"), title: \(item.title.debugDescription), text: \(item.text.debugDescription)")
 		}

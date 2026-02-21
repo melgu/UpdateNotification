@@ -2,7 +2,7 @@ import XCTest
 @testable import UpdateNotification
 
 final class UpdateNotificationTests: XCTestCase {
-	func testCreate() {
+	func testCreate() throws {
 		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!)
 		manager.create(website: URL(string: "http://www.melvin-gundlach.de/apps/demo")!)
 		
@@ -21,11 +21,11 @@ final class UpdateNotificationTests: XCTestCase {
 			downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download")
 		)
 		
-		manager.add(item: item1)
-		manager.add(item: item2)
+		try manager.add(item: item1)
+		try manager.add(item: item2)
 		
-		let data = try? JSONEncoder().encode(manager.feed!)
-		print(String(data: data!, encoding: String.Encoding.utf8) ?? "nil")
+		let data = try JSONEncoder().encode(manager.feed!)
+		print(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
 	}
 	
 	func testLoad() {
@@ -33,7 +33,13 @@ final class UpdateNotificationTests: XCTestCase {
 		let expectation = expectation(description: "Load feed")
 		
 		Task {
-			await manager.load()
+			do {
+				try await manager.load()
+			} catch {
+				XCTFail("Failed to load feed: \(error)")
+				expectation.fulfill()
+				return
+			}
 			
 			guard let feed = manager.feed else {
 				XCTFail("manager.feed is nil")
@@ -77,8 +83,12 @@ final class UpdateNotificationTests: XCTestCase {
 		let expectation = expectation(description: "Load and log feed")
 		
 		Task {
-			await manager.load()
-			manager.logFeed()
+			do {
+				try await manager.load()
+				try manager.logFeed()
+			} catch {
+				XCTFail("Failed to load/log feed: \(error)")
+			}
 			expectation.fulfill()
 		}
 		

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension OperatingSystemVersion: Codable {
+extension OperatingSystemVersion: @retroactive Codable {
 	public init(from decoder: Decoder) throws {
 		self.init()
 		let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -30,7 +30,7 @@ extension OperatingSystemVersion: Codable {
 	}
 }
 
-extension OperatingSystemVersion: Equatable {
+extension OperatingSystemVersion: @retroactive Equatable {
 	public static func == (lhs: OperatingSystemVersion, rhs: OperatingSystemVersion) -> Bool {
 		return lhs.majorVersion == rhs.majorVersion
 			&& lhs.minorVersion == rhs.minorVersion

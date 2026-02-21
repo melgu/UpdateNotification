@@ -1,3 +1,10 @@
+//
+//  VersionTests.swift
+//  UpdateNotification
+//
+//  Created by Melvin Gundlach on 21.02.26.
+//
+
 import Foundation
 import Testing
 @testable import UpdateNotification

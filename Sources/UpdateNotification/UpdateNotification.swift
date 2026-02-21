@@ -17,8 +17,9 @@ public final class UpdateNotification {
 	/// - Returns: A boolean if a newer version is available
 	public func checkForUpdates() async throws -> Bool {
 		let infoDict = Bundle.main.infoDictionary
-		let currentVersion = infoDict?["CFBundleShortVersionString"] as? String ?? "Unknown"
-		let currentBuild = infoDict?["CFBundleVersion"] as? String ?? "Unknown"
+		let currentVersionString = infoDict?["CFBundleShortVersionString"] as? String
+		let currentVersion = Version(stringLiteral: currentVersionString ?? "0.0.0")
+		let currentBuild = infoDict?["CFBundleVersion"] as? String ?? "0"
 		
 		try await feedManager.load()
 		
@@ -45,12 +46,9 @@ public final class UpdateNotification {
 			return true
 		}
 		
-		if let itemBuild = firstItem.build {
-			if firstItem.version == currentVersion &&
-				itemBuild > currentBuild {
-				print("UpdateNotification: New version available.")
-				return true
-			}
+		if firstItem.version == currentVersion, let itemBuild = firstItem.build, itemBuild > currentBuild {
+			print("UpdateNotification: New version available.")
+			return true
 		}
 		
 		print("UpdateNotification: No newer version available.")

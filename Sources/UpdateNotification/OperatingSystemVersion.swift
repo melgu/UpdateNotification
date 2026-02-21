@@ -32,9 +32,7 @@ extension OperatingSystemVersion: @retroactive Codable {
 
 extension OperatingSystemVersion: @retroactive Equatable {
 	public static func == (lhs: OperatingSystemVersion, rhs: OperatingSystemVersion) -> Bool {
-		return lhs.majorVersion == rhs.majorVersion
-			&& lhs.minorVersion == rhs.minorVersion
-			&& lhs.patchVersion == rhs.patchVersion
+		(lhs.majorVersion, lhs.minorVersion, lhs.patchVersion) == (rhs.majorVersion, rhs.minorVersion, rhs.patchVersion)
 	}
 }
 

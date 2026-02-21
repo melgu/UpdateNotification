@@ -10,28 +10,41 @@ import SwiftUI
 struct FeedView: View {
 	let feedManager: UpdateFeedManager
 	
+	@State private var isLoading = true
+	
 	var body: some View {
-		ScrollView {
-			VStack(alignment: .leading) {
-				Text("Changelog")
-					.font(.title)
-				
-				if let items = feedManager.feed?.items {
-					if items.isEmpty {
-						Text("No items in feed.")
-					} else {
-						ForEach(items) { item in
-							ItemView(item: item)
-							Divider()
+		Group {
+			if isLoading {
+				ProgressView()
+					.controlSize(.large)
+					.task {
+						try? await feedManager.load()
+						isLoading = false
+					}
+			} else {
+				ScrollView {
+					VStack(alignment: .leading) {
+						Text("Changelog")
+							.font(.title)
+						
+						if let items = feedManager.feed?.items {
+							if items.isEmpty {
+								Text("No items in feed.")
+							} else {
+								ForEach(items) { item in
+									ItemView(item: item)
+									Divider()
+								}
+							}
+						} else {
+							Text("Couldn't load items.")
 						}
 					}
-				} else {
-					Text("Couldn't load items.")
+					.padding()
 				}
 			}
-			.padding()
 		}
-		.task { try? await feedManager.load() }
+		.frame(minWidth: 500, minHeight: 500)
 	}
 }
 

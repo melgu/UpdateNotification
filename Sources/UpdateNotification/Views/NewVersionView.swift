@@ -10,57 +10,71 @@ import SwiftUI
 struct NewVersionView: View {
 	let feedManager: UpdateFeedManager
 	
+	@State private var isLoading = true
+	
 	var body: some View {
-		ScrollView {
-			VStack(alignment: .leading) {
-				Text("New version available")
-					.font(.title)
-				
-				if let feed = feedManager.feed, let item = feed.items.first {
-					Text("New version: \(item.version)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
-					Divider()
-					if let title = item.title {
-						Text(title)
-							.font(.headline)
+		Group {
+			if isLoading {
+				ProgressView()
+					.controlSize(.large)
+					.task {
+						try? await feedManager.load()
+						isLoading = false
 					}
-					if let text = item.text {
-						Text(text)
-					}
-					if let date = item.date {
-						Text("Release: \(ISO8601DateFormatter().string(from: date))")
-							.foregroundColor(.gray)
-					}
-					if let minOSVersion = item.minOSVersion {
-						Text("Minimum OS: \(minOSVersion.string)")
-							.foregroundColor(.gray)
-					}
-					HStack {
-						Spacer(minLength: 0)
-						Button(action: {
-							if let infoUrl = item.infoUrl {
-								NSWorkspace.shared.open(infoUrl)
-							} else {
-								NSWorkspace.shared.open(feed.url)
+			} else {
+				ScrollView {
+					VStack(alignment: .leading) {
+						Text("New version available")
+							.font(.title)
+						
+						if let feed = feedManager.feed, let item = feed.items.first {
+							Text("New version: \(item.version)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
+							Divider()
+							if let title = item.title {
+								Text(title)
+									.font(.headline)
 							}
-						}) {
-							Text("More Info")
-						}
-						Button(action: {
-							if let downloadUrl = item.downloadUrl {
-								NSWorkspace.shared.open(downloadUrl)
-							} else {
-								NSWorkspace.shared.open(feed.url)
+							if let text = item.text {
+								Text(text)
 							}
-						}) {
-							Text("Download")
+							if let date = item.date {
+								Text("Release: \(ISO8601DateFormatter().string(from: date))")
+									.foregroundColor(.gray)
+							}
+							if let minOSVersion = item.minOSVersion {
+								Text("Minimum OS: \(minOSVersion.string)")
+									.foregroundColor(.gray)
+							}
+							HStack {
+								Spacer(minLength: 0)
+								Button(action: {
+									if let infoUrl = item.infoUrl {
+										NSWorkspace.shared.open(infoUrl)
+									} else {
+										NSWorkspace.shared.open(feed.url)
+									}
+								}) {
+									Text("More Info")
+								}
+								Button(action: {
+									if let downloadUrl = item.downloadUrl {
+										NSWorkspace.shared.open(downloadUrl)
+									} else {
+										NSWorkspace.shared.open(feed.url)
+									}
+								}) {
+									Text("Download")
+								}
+							}
+						} else {
+							Text("No release information available.")
 						}
 					}
-				} else {
-					Text("No release information available.")
+					.padding()
 				}
 			}
-			.padding()
 		}
+		.frame(minWidth: 500, minHeight: 300)
 	}
 	
 	private var currentVersion: String {

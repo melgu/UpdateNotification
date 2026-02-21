@@ -3,8 +3,8 @@ import XCTest
 
 final class UpdateNotificationTests: XCTestCase {
 	func testCreate() throws {
-		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/feed.json")!)
-		manager.create(website: URL(string: "http://www.melvin-gundlach.de/apps/demo")!)
+		let manager = UpdateFeedManager(feedUrl: URL(string: "https://www.melvin-gundlach.de/apps/demo/feed.json")!)
+		manager.create(website: URL(string: "https://www.melvin-gundlach.de/apps/demo")!)
 		
 		let item1 = Item(
 			version: "1.0.0",
@@ -17,8 +17,8 @@ final class UpdateNotificationTests: XCTestCase {
 			title: "First Update",
 			text: "Bugfixes",
 			minOSVersion: OperatingSystemVersion(majorVersion: 10, minorVersion: 15, patchVersion: 0),
-			infoUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101"),
-			downloadUrl: URL(string: "http://www.melvin-gundlach.de/apps/demo/v101/download")
+			infoUrl: URL(string: "https://www.melvin-gundlach.de/apps/demo/v101"),
+			downloadUrl: URL(string: "https://www.melvin-gundlach.de/apps/demo/v101/download")
 		)
 		
 		try manager.add(item: item1)
@@ -29,7 +29,7 @@ final class UpdateNotificationTests: XCTestCase {
 	}
 	
 	func testLoad() {
-		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
+		let manager = UpdateFeedManager(feedUrl: URL(string: "https://www.melvin-gundlach.de/apps/app-feeds/TidalSwift.json")!)
 		let expectation = expectation(description: "Load feed")
 		
 		Task {
@@ -79,7 +79,7 @@ final class UpdateNotificationTests: XCTestCase {
 	}
 	
 	func testLogFeed() {
-		let manager = UpdateFeedManager(feedUrl: URL(string: "http://www.melvin-gundlach.de/apps/app-feeds/Denon-Volume.json")!)
+		let manager = UpdateFeedManager(feedUrl: URL(string: "https://www.melvin-gundlach.de/apps/app-feeds/Denon-Volume.json")!)
 		let expectation = expectation(description: "Load and log feed")
 		
 		Task {

@@ -59,7 +59,7 @@ public final class UpdateNotification {
 	
 	/// Show the `NewVersionView` in a new window.
 	@MainActor
-	public func showNewVersionView() throws {
+	public func showNewVersionView() {
 		let controller = ResizableWindowController(rootView: newVersionView())
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)
@@ -74,8 +74,8 @@ public final class UpdateNotification {
 	
 	/// Show the changelog in a new window.
 	@MainActor
-	public func showChangelogWindow() async throws {
-		let controller = ResizableWindowController(rootView: try await changelogView())
+	public func showChangelogWindow() {
+		let controller = ResizableWindowController(rootView: changelogView())
 		controller.window?.title = "Changelog"
 		controller.showWindow(nil)
 	}
@@ -83,7 +83,7 @@ public final class UpdateNotification {
 	/// Build and return the changelog view.
 	/// - Returns: A configured `FeedView`
 	@MainActor
-	public func changelogView() async throws -> some View {
+	public func changelogView() -> some View {
 		FeedView(feedManager: feedManager)
 	}
 }

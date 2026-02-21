@@ -1,8 +1,9 @@
 import Foundation
-
+import SwiftUI
 
 /// The `UpdateNotification` class contains functions to check for updates and display relevant views.
 public class UpdateNotification {
+	/// Manages loading and exposing update feed data for this notifier.
 	public let feedManager: UpdateFeedManager
 	
 	/// Initialize the UpdateNotification class.
@@ -14,8 +15,9 @@ public class UpdateNotification {
 	/// Compare the latest version in the update feed to the currently installed version.
 	/// - Returns: A boolean if a newer version is available
 	public func checkForUpdates() async throws -> Bool {
-		var currentVersion, currentBuild: String
-		(currentVersion, currentBuild) = getVersionInfo()
+		let infoDict = Bundle.main.infoDictionary
+		let currentVersion = infoDict?["CFBundleShortVersionString"] as? String ?? "Unknown"
+		let currentBuild = infoDict?["CFBundleVersion"] as? String ?? "Unknown"
 		
 		try await feedManager.load()
 		
@@ -55,44 +57,30 @@ public class UpdateNotification {
 	}
 	
 	/// Show the `NewVersionView` in a new window.
+	@MainActor
 	public func showNewVersionView() throws {
-		guard let firstItem = feedManager.feed?.items.first else {
-			throw UpdateFeedError.feedNotLoaded
-		}
-		
-		var currentVersion, currentBuild: String
-		(currentVersion, currentBuild) = getVersionInfo()
-		
-		let controller = ResizableWindowController(rootView:
-			NewVersionView(item: firstItem, currentVersion: currentVersion, currentBuild: currentBuild, url: feedManager.feed!.url)
-		)
+		let controller = ResizableWindowController(rootView: newVersionView())
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)
+	}
+	
+	/// Build and return the `NewVersionView`.
+	/// - Returns: A configured `NewVersionView`
+	public func newVersionView() -> some View {
+		NewVersionView(feedManager: feedManager)
 	}
 	
 	/// Show the changelog in a new window.
 	@MainActor
 	public func showChangelogWindow() async throws {
-		try await feedManager.load()
-		
-		guard let items = feedManager.feed?.items else {
-			throw UpdateFeedError.feedNotLoaded
-		}
-		
-		let controller = ResizableWindowController(rootView:
-			FeedView(items: items)
-		)
+		let controller = ResizableWindowController(rootView: try await changelogView())
 		controller.window?.title = "Changelog"
 		controller.showWindow(nil)
 	}
 	
-	private func getVersionInfo() -> (String, String) {
-		var currentVersion = "Unknown"
-		var currentBuild = "Unknown"
-		if let infoDict = Bundle.main.infoDictionary {
-			currentVersion = infoDict["CFBundleShortVersionString"] as? String ?? "Unknown"
-			currentBuild = infoDict["CFBundleVersion"] as? String ?? "Unknown"
-		}
-		return (currentVersion, currentBuild)
+	/// Build and return the changelog view.
+	/// - Returns: A configured `FeedView`
+	public func changelogView() async throws -> some View {
+		FeedView(feedManager: feedManager)
 	}
 }

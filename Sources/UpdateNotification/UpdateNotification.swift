@@ -55,6 +55,7 @@ public final class UpdateNotification {
 		return false
 	}
 	
+	#if canImport(AppKit)
 	/// Show the `NewVersionView` in a new window.
 	@MainActor
 	public func showNewVersionView() {
@@ -62,6 +63,7 @@ public final class UpdateNotification {
 		controller.window?.title = "New version available"
 		controller.showWindow(nil)
 	}
+	#endif
 	
 	/// Build and return the `NewVersionView`.
 	/// - Returns: A configured `NewVersionView`
@@ -70,6 +72,7 @@ public final class UpdateNotification {
 		NewVersionView(feedManager: feedManager)
 	}
 	
+	#if canImport(AppKit)
 	/// Show the changelog in a new window.
 	@MainActor
 	public func showChangelogWindow() {
@@ -77,6 +80,7 @@ public final class UpdateNotification {
 		controller.window?.title = "Changelog"
 		controller.showWindow(nil)
 	}
+	#endif
 	
 	/// Build and return the changelog view.
 	/// - Returns: A configured `FeedView`

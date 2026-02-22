@@ -83,6 +83,12 @@ extension Version: ExpressibleByStringLiteral {
 	}
 }
 
+extension Version: CustomLocalizedStringResourceConvertible {
+	public var localizedStringResource: LocalizedStringResource {
+		"\(major).\(minor).\(patch)"
+	}
+}
+
 extension Version: Codable {
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.singleValueContainer()

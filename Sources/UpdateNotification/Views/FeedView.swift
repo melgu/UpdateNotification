@@ -51,6 +51,8 @@ struct FeedView: View {
 struct ItemView: View {
 	let item: Item
 	
+	@Environment(\.openURL) private var openURL
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			if let title = item.title {
@@ -58,7 +60,7 @@ struct ItemView: View {
 					.font(.headline)
 			}
 			HStack {
-				Text("Version \(item.version)\(item.build != nil ? " (\(item.build!))" : "")")
+				Text("Version \(item.version.localizedStringResource)\(item.build != nil ? " (\(item.build!))" : "")")
 				if let date = item.date {
 					Text("–")
 					Text("Release:")
@@ -80,7 +82,7 @@ struct ItemView: View {
 						.underline()
 						.foregroundColor(.blue)
 						.onTapGesture {
-							NSWorkspace.shared.open(infoUrl)
+							openURL(infoUrl)
 						}
 				}
 			}
@@ -91,7 +93,7 @@ struct ItemView: View {
 						.underline()
 						.foregroundColor(.blue)
 						.onTapGesture {
-							NSWorkspace.shared.open(downloadUrl)
+							openURL(downloadUrl)
 						}
 				}
 			}

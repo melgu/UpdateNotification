@@ -11,6 +11,7 @@ struct NewVersionView: View {
 	let feedManager: UpdateFeedManager
 	
 	@State private var isLoading = true
+	@Environment(\.openURL) private var openURL
 	
 	var body: some View {
 		Group {
@@ -28,7 +29,7 @@ struct NewVersionView: View {
 							.font(.title)
 						
 						if let feed = feedManager.feed, let item = feed.items.first {
-							Text("New version: \(item.version)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
+							Text("New version: \(item.version.localizedStringResource)\(item.build != nil ? " (\(item.build!))" : ""). Current version: \(currentVersion) (\(currentBuild))")
 							Divider()
 							if let title = item.title {
 								Text(title)
@@ -49,18 +50,18 @@ struct NewVersionView: View {
 								Spacer(minLength: 0)
 								Button(action: {
 									if let infoUrl = item.infoUrl {
-										NSWorkspace.shared.open(infoUrl)
+										openURL(infoUrl)
 									} else {
-										NSWorkspace.shared.open(feed.url)
+										openURL(feed.url)
 									}
 								}) {
 									Text("More Info")
 								}
 								Button(action: {
 									if let downloadUrl = item.downloadUrl {
-										NSWorkspace.shared.open(downloadUrl)
+										openURL(downloadUrl)
 									} else {
-										NSWorkspace.shared.open(feed.url)
+										openURL(feed.url)
 									}
 								}) {
 									Text("Download")
